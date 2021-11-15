@@ -41,7 +41,13 @@ void setup() {
 void loop() {
     // while there is data coming in, read it
     // and send to the hardware serial port:
-    while (Serial.available() > 0) {
+    if (Serial.available() >= 6)
+     {
+       for (int i=0; i<6; i++) { 
+        output = String(output)+String(Serial.read());
+       }
+     }
+    /*while (Serial.available() > 0) {
       output = "";
       String string = Serial.readString();
       int n_size = string.length();
@@ -67,7 +73,7 @@ void loop() {
       Serial.println(number);
       Serial.print("Result");
       Serial.println(output);
-    }
+    }*/
   
   if ((WiFiMulti.run() == WL_CONNECTED)) {
 
