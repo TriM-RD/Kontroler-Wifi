@@ -17,7 +17,7 @@
 const uint8_t fingerprint[20] = {0x40, 0xaf, 0x00, 0x6b, 0xec, 0x90, 0x22, 0x41, 0x8e, 0xa3, 0xad, 0xfa, 0x1a, 0xe8, 0x25, 0x41, 0x1d, 0x1a, 0x54, 0xb3};
 
 ESP8266WiFiMulti WiFiMulti;
-String output = "0";
+byte output[6] = {0,0,0,0,0,0};
 
 void setup() {
 
@@ -44,36 +44,9 @@ void loop() {
     if (Serial.available() >= 6)
      {
        for (int i=0; i<6; i++) { 
-        output = String(output)+String(Serial.read());
+        output[i] = Serial.read();
        }
      }
-    /*while (Serial.available() > 0) {
-      output = "";
-      String string = Serial.readString();
-      int n_size = string.length();
-      char number[n_size + 1];
-      strcpy(number, string.c_str());
-      
-      int binaryNum[8];
-      int i = 0;
-      int n = atoi(number);
-      while (n > 0) {
-   
-          // storing remainder in binary array
-          binaryNum[i] = n % 2;
-          output = String(binaryNum[i])+String(output);
-          n = n / 2;
-          i++;
-      }
-      while(output.length() < 8){
-        output = String(0)+String(output);
-      }
-      // print our string
-      Serial.println(string);
-      Serial.println(number);
-      Serial.print("Result");
-      Serial.println(output);
-    }*/
   
   if ((WiFiMulti.run() == WL_CONNECTED)) {
 
@@ -92,10 +65,10 @@ void loop() {
       Serial.print("[HTTPS] GET...\n");
       https.addHeader("Content-Type", "application/json");
       // start connection and send HTTP header
-      Serial.println(output);
-      //char json[50];
-      //sprintf(json, "{\"data\":{\"stanje\":%d}}", String(output));
-      String json = String("{\"data\":{\"stanje\":\"")+String(output)+String("\"}}");
+      for (int i=0; i<6; i++) { 
+        Serial.println(output[i]);
+       }
+      String json = String("{\"data\":{\"decoded\":{\"slave3\":\"")+String(output[0])+String("\",\"slave2\":\"")+String(output[1])+String("\",\"slave1\":\"")+String(output[2])+String("\",\"master\":\"")+String(output[3])+String("\",\"temperatura\":\"")+String(output[4])+String("\",\"vlaga\":\"")+String(output[5])+String("\"}}}");
       Serial.println(json);
       int httpCode = https.POST(json);
 
