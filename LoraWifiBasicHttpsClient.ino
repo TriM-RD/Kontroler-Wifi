@@ -41,6 +41,9 @@ void setup() {
 void loop() {
     // while there is data coming in, read it
     // and send to the hardware serial port:
+    for (int i=0; i<6; i++) { 
+        output[i] = 0;
+       }
     if (Serial.available() >= 6)
      {
        for (int i=0; i<6; i++) { 
@@ -65,9 +68,6 @@ void loop() {
       Serial.print("[HTTPS] GET...\n");
       https.addHeader("Content-Type", "application/json");
       // start connection and send HTTP header
-      for (int i=0; i<6; i++) { 
-        Serial.println(output[i]);
-       }
       String json = String("{\"data\":{\"decoded\":{\"slave3\":\"")+String(output[0])+String("\",\"slave2\":\"")+String(output[1])+String("\",\"slave1\":\"")+String(output[2])+String("\",\"master\":\"")+String(output[3])+String("\",\"temperatura\":\"")+String(output[4])+String("\",\"vlaga\":\"")+String(output[5])+String("\"}}}");
       Serial.println(json);
       int httpCode = https.POST(json);
