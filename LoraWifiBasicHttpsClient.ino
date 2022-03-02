@@ -35,7 +35,7 @@ void setup() {
   }
 
   WiFi.mode(WIFI_STA);
-  WiFiMulti.addAP("TriM Guest", "");
+  WiFiMulti.addAP("TriM Test", "12345678");
 }
 
 void loop() {
@@ -48,6 +48,8 @@ void loop() {
      {
        for (int i=0; i<6; i++) { 
         output[i] = Serial.read();
+        Serial.println(output[i]);
+        
        }
      }
   
